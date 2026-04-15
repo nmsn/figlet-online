@@ -73,7 +73,7 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
       className={cn(
         "relative bg-card border border-card-border rounded-lg p-3 cursor-pointer",
         "transition-all duration-150 hover:border-card-hover hover:bg-card-hover",
-        "select-none min-h-[120px] flex flex-col",
+        "select-none min-h-50 flex flex-col",
         isCopied && "border-accent"
       )}
       onClick={handleClick}
