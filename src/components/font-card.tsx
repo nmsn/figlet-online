@@ -4,8 +4,7 @@
 
 import React, { useState, useCallback } from "react";
 import type { FontMeta } from "@/lib/figlet/fonts-meta";
-import { parseFlf } from "@/lib/figlet/parser";
-import { renderText, cleanAsciiOutput } from "@/lib/figlet/renderer";
+import figlet from "figlet";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -25,18 +24,15 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
   const loadAndRender = useCallback(async () => {
     if (state !== "idle") return;
     setState("loading");
-    try {
-      const res = await fetch(`/api/fonts/${font.id}`);
-      if (!res.ok) throw new Error("Failed to load font");
-      const content = await res.text();
-      const parsed = parseFlf(content);
-      const rendered = renderText(text || " ", parsed);
-      setAscii(cleanAsciiOutput(rendered, parsed.hardblank));
+    figlet.text(text || " ", { font: font.id }, (err, data) => {
+      if (err) {
+        setState("error");
+        return;
+      }
+      setAscii(data ?? "");
       setState("rendered");
       onVisible?.();
-    } catch {
-      setState("error");
-    }
+    });
   }, [font.id, text, state, onVisible]);
 
   const handleClick = useCallback(() => {
