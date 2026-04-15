@@ -16,7 +16,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <main className="min-h-screen">
       {/* Sticky header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-card-border py-4">
         <div className="container mx-auto px-4">
@@ -28,7 +28,7 @@ export default function HomePage() {
       </header>
 
       {/* Font wall */}
-      <div className="container mx-auto px-4 py-6" style={{ flex: 1 }}>
+      <div className="container mx-auto px-4 py-6">
         <FontWall fonts={allFontsMeta} text={text} />
       </div>
     </main>
