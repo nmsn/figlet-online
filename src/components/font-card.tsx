@@ -73,7 +73,7 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
       className={cn(
         "relative bg-card border border-card-border rounded-lg p-3 cursor-pointer",
         "transition-all duration-150 hover:border-card-hover hover:bg-card-hover",
-        "select-none min-h-50 flex flex-col",
+        "select-none min-h-45 flex flex-col",
         isCopied && "border-accent"
       )}
       onClick={handleClick}
@@ -90,8 +90,8 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
           </div>
         )}
         {state === "rendered" && ascii && (
-          <pre className="ascii-text text-accent text-xs leading-tight overflow-hidden">
-            {ascii.slice(0, 200)}
+          <pre className="ascii-text text-accent text-[10px] leading-none overflow-hidden">
+            {ascii.slice(0, 600)}
           </pre>
         )}
         {state === "error" && (
