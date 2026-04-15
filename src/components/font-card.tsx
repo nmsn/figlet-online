@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import type { FontMeta } from "@/lib/figlet/fonts-meta";
 import figlet from "figlet";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
   const [state, setState] = useState<RenderState>("idle");
   const [ascii, setAscii] = useState<string>("");
   const [isCopied, setIsCopied] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const loadAndRender = useCallback(async () => {
     if (state !== "idle") return;
@@ -47,8 +48,28 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
     setTimeout(() => setIsCopied(false), 1500);
   }, [ascii, font.name, state]);
 
+  useEffect(() => {
+    if (state !== "idle") return;
+    const el = cardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadAndRender();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [state, loadAndRender]);
+
   return (
     <div
+      ref={cardRef}
       className={cn(
         "relative bg-card border border-card-border rounded-lg p-3 cursor-pointer",
         "transition-all duration-150 hover:border-card-hover hover:bg-card-hover",

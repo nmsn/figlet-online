@@ -3,6 +3,20 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { FontCard } from "@/components/font-card";
 
+// Mock IntersectionObserver
+const mockObserve = vi.fn();
+const mockDisconnect = vi.fn();
+const mockUnobserve = vi.fn();
+class MockIntersectionObserver {
+  observe = mockObserve;
+  disconnect = mockDisconnect;
+  unobserve = mockUnobserve;
+  constructor() {
+    return this;
+  }
+}
+globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+
 const mockFont = {
   id: "Standard",
   name: "Standard",
