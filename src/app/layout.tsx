@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh">
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body className="bg-background text-foreground antialiased" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         {children}
         <Toaster />
       </body>

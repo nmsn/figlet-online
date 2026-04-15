@@ -2,26 +2,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { TextInput } from "@/components/text-input";
 import { FontWall } from "@/components/font-wall";
-import type { FontMeta } from "@/lib/figlet/fonts-meta";
+import { allFontsMeta } from "@/lib/figlet/fonts-meta";
 
 export default function HomePage() {
   const [text, setText] = useState("Hello World");
-  const [fonts, setFonts] = useState<FontMeta[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load font metadata on mount
-  useEffect(() => {
-    fetch("/api/fonts")
-      .then(r => r.json())
-      .then(data => {
-        setFonts(data.fonts);
-        setIsLoaded(true);
-      })
-      .catch(console.error);
-  }, []);
 
   // Debounced text change
   const handleTextChange = useCallback((newText: string) => {
@@ -29,7 +16,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen">
+    <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       {/* Sticky header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-card-border py-4">
         <div className="container mx-auto px-4">
@@ -41,19 +28,8 @@ export default function HomePage() {
       </header>
 
       {/* Font wall */}
-      <div className="container mx-auto px-4 py-6">
-        {isLoaded ? (
-          <FontWall fonts={fonts} text={text} />
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div
-                key={i}
-                className="bg-card border border-card-border rounded-lg h-[120px] animate-pulse"
-              />
-            ))}
-          </div>
-        )}
+      <div className="container mx-auto px-4 py-6" style={{ flex: 1 }}>
+        <FontWall fonts={allFontsMeta} text={text} />
       </div>
     </main>
   );

@@ -52,7 +52,7 @@ export function FontWall({ fonts, text }: FontWallProps) {
   return (
     <div
       ref={parentRef}
-      className="h-[calc(100vh-120px)] overflow-auto"
+      className="min-h-[calc(100vh-120px)] overflow-auto"
       style={{ contain: "strict" }}
     >
       <div
