@@ -12,9 +12,9 @@ interface FontWallProps {
   text: string;
 }
 
-const COLS = 4; // desktop
-const CARD_HEIGHT = 140;
-const GAP = 12;
+const COLS = 3; // desktop
+const CARD_HEIGHT = 180;
+const GAP = 20;
 
 export function FontWall({ fonts, text }: FontWallProps) {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -38,7 +38,7 @@ export function FontWall({ fonts, text }: FontWallProps) {
   if (!mounted) {
     // SSR / initial skeleton
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
@@ -52,8 +52,7 @@ export function FontWall({ fonts, text }: FontWallProps) {
   return (
     <div
       ref={parentRef}
-      className="min-h-[calc(100vh-120px)] overflow-auto"
-      style={{ contain: "strict" }}
+      className="w-full"
     >
       <div
         style={{
