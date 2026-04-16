@@ -35,6 +35,10 @@ export default function HomePage() {
               triggerOnHover={true}
               respectReducedMotion={true}
             />
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <AccentPicker />
+            </div>
           </div>
           <TextInput value={text} onChange={handleTextChange} />
         </div>
