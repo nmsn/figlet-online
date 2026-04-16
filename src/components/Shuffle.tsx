@@ -395,20 +395,17 @@ const Shuffle: React.FC<ShuffleProps> = ({
   );
 
   const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-2xl leading-none';
-  const userHasFont = useMemo(() => className && /font[-[]/i.test(className), [className]);
 
-  const fallbackFont = useMemo(
-    () => (userHasFont ? {} : { fontFamily: `'var(--font-pixel)', monospace` }),
-    [userHasFont]
-  );
+  // Always use pixel font for Shuffle effect
+  const pixelFont = { fontFamily: `'var(--font-pixel)', monospace` };
 
   const commonStyle = useMemo(
     () => ({
       textAlign,
-      ...fallbackFont,
+      ...pixelFont,
       ...style
     }),
-    [textAlign, fallbackFont, style]
+    [textAlign, style]
   );
 
   const classes = useMemo(
