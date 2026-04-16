@@ -4,6 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { JSX } from 'react';
+import { Press_Start_2P } from 'next/font/google';
+
+const pixelFont = Press_Start_2P({ subsets: ['latin'], weight: '400' });
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
@@ -396,13 +399,13 @@ const Shuffle: React.FC<ShuffleProps> = ({
 
   const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-2xl leading-none';
 
-  // Always use pixel font for Shuffle effect
-  const pixelFont = { fontFamily: `'var(--font-pixel)', monospace` };
+  // Always use pixel font for Shuffle effect via CSS variable
+  const fontStyle = { fontFamily: `'${pixelFont.style.fontFamily}', monospace` };
 
   const commonStyle = useMemo(
     () => ({
       textAlign,
-      ...pixelFont,
+      ...fontStyle,
       ...style
     }),
     [textAlign, style]
