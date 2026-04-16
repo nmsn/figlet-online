@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh" className={cn("font-sans", geist.variable)}>
-      <body className="bg-background text-foreground antialiased" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <body className="bg-background text-foreground antialiased min-h-screen flex flex-col">
         {children}
         <Toaster />
       </body>
