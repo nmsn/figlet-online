@@ -26,4 +26,4 @@ next-env.d.ts
 package/
 
 # Test font file
-public/fonts/miniwi-test.flf
+public/fonts/miniwi-test.flf.worktrees/
