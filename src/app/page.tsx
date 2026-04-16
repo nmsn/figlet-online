@@ -25,6 +25,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-4">
             <Shuffle
+              key={accent}
               text="Figlet Fonts"
               tag="h1"
               className="text-xl font-bold"
