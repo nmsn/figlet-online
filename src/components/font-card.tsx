@@ -50,7 +50,7 @@ export const FontCard = memo(function FontCardInner({ font, text, onVisible, onO
       setState("idle");
       setAscii("");
     }
-  }, [text, state]);
+  }, [text]);
 
   const handleClick = useCallback(() => {
     if (state === "idle") {
