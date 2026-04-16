@@ -25,5 +25,5 @@ next-env.d.ts
 *.tgz
 package/
 
-# Test font file
-public/fonts/miniwi-test.flf.worktrees/
+# Git worktrees
+.worktrees/
