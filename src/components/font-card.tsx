@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef, memo } from "react";
+import { motion } from "motion/react";
 import type { FontMeta } from "@/lib/figlet/fonts-meta";
 import figlet from "figlet";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ export const FontCard = memo(function FontCardInner({ font, text, onVisible, onO
   const [state, setState] = useState<RenderState>("idle");
   const [ascii, setAscii] = useState<string>("");
   const [isCopied, setIsCopied] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const loadAndRender = useCallback(async () => {
@@ -83,6 +85,8 @@ export const FontCard = memo(function FontCardInner({ font, text, onVisible, onO
       )}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* ASCII Preview */}
       <div className="flex-1 flex items-center justify-center overflow-hidden">
@@ -113,9 +117,14 @@ export const FontCard = memo(function FontCardInner({ font, text, onVisible, onO
 
       {/* Double-click hint */}
       {state === "rendered" && (
-        <div className="absolute bottom-1 right-2">
+        <motion.div
+          className="absolute bottom-1 right-2"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 4 }}
+          transition={{ duration: 0.2 }}
+        >
           <span className="text-[10px] text-muted-foreground">dblclick to copy</span>
-        </div>
+        </motion.div>
       )}
     </div>
   );
