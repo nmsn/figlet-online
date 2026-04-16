@@ -4,9 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { JSX } from 'react';
-import { Press_Start_2P } from 'next/font/google';
-
-const pixelFont = Press_Start_2P({ subsets: ['latin'], weight: '400' });
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
@@ -72,10 +69,28 @@ const Shuffle: React.FC<ShuffleProps> = ({
   const hoverHandlerRef = useRef<((e: Event) => void) | null>(null);
 
   useEffect(() => {
-    if ('fonts' in document) {
-      if (document.fonts.status === 'loaded') setFontsLoaded(true);
-      else document.fonts.ready.then(() => setFontsLoaded(true));
-    } else setFontsLoaded(true);
+    // Load Google Font for Press Start 2P
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+
+    const onLoad = () => setFontsLoaded(true);
+    link.addEventListener('load', onLoad);
+
+    // Check if already loaded
+    if (document.fonts) {
+      document.fonts.ready.then(() => {
+        if (document.fonts.check('12px "Press Start 2P"')) {
+          setFontsLoaded(true);
+        }
+      });
+    }
+
+    return () => {
+      link.removeEventListener('load', onLoad);
+      document.head.removeChild(link);
+    };
   }, []);
 
   const scrollTriggerStart = useMemo(() => {
@@ -403,7 +418,7 @@ const Shuffle: React.FC<ShuffleProps> = ({
   const commonStyle = useMemo(
     () => ({
       textAlign,
-      fontFamily: pixelFont.style.fontFamily,
+      fontFamily: "'Press Start 2P', monospace",
       ...style
     }),
     [textAlign, style]
