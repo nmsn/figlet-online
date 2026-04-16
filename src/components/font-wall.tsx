@@ -2,10 +2,15 @@
 
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, memo } from "react";
+import dynamic from "next/dynamic";
 import { FontCard } from "@/components/font-card";
-import { FontPreviewDialog } from "@/components/font-preview-dialog";
 import type { FontMeta } from "@/lib/figlet/fonts-meta";
+
+const FontPreviewDialog = dynamic(
+  () => import("@/components/font-preview-dialog").then(mod => ({ default: mod.FontPreviewDialog })),
+  { ssr: false }
+);
 
 interface FontWallProps {
   fonts: FontMeta[];
@@ -14,7 +19,7 @@ interface FontWallProps {
 
 const COLS = 2;
 
-export function FontWall({ fonts, text }: FontWallProps) {
+export const FontWall = memo(function FontWall({ fonts, text }: FontWallProps) {
   const [mounted, setMounted] = useState(false);
   const [previewFont, setPreviewFont] = useState<FontMeta | null>(null);
   const [previewText, setPreviewText] = useState("");
@@ -72,4 +77,4 @@ export function FontWall({ fonts, text }: FontWallProps) {
       />
     </div>
   );
-}
+});

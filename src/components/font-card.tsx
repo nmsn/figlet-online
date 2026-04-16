@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, memo } from "react";
 import type { FontMeta } from "@/lib/figlet/fonts-meta";
 import figlet from "figlet";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ interface FontCardProps {
 
 type RenderState = "idle" | "loading" | "rendered" | "error";
 
-export function FontCard({ font, text, onVisible, onOpenPreview }: FontCardProps) {
+export const FontCard = memo(function FontCardInner({ font, text, onVisible, onOpenPreview }: FontCardProps) {
   const [state, setState] = useState<RenderState>("idle");
   const [ascii, setAscii] = useState<string>("");
   const [isCopied, setIsCopied] = useState(false);
@@ -119,4 +119,4 @@ export function FontCard({ font, text, onVisible, onOpenPreview }: FontCardProps
       )}
     </div>
   );
-}
+});
