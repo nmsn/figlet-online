@@ -7,11 +7,13 @@ import { allFontsMeta } from "@/lib/figlet/fonts-meta";
 import Shuffle from "@/components/Shuffle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AccentPicker } from "@/components/accent-picker";
+import { useAccentColor } from "@/hooks/use-accent-color";
 
 const ASCII_CHARS = "█▓▒░▄▀■□▪▫★☆●○◆◇░▒▓";
 
 export default function HomePage() {
   const [text, setText] = useState("Hello World");
+  const { accent } = useAccentColor();
 
   const handleTextChange = useCallback((newText: string) => {
     setText(newText);
@@ -26,8 +28,8 @@ export default function HomePage() {
               text="Figlet Fonts"
               tag="h1"
               className="text-xl font-bold"
-              colorFrom="#00ff00"
-              colorTo="#00ff00"
+              colorFrom={accent}
+              colorTo={accent}
               shuffleDirection="right"
               scrambleCharset={ASCII_CHARS}
               duration={0.4}
