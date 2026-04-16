@@ -5,6 +5,8 @@ import { TextInput } from "@/components/text-input";
 import { FontWall } from "@/components/font-wall";
 import { allFontsMeta } from "@/lib/figlet/fonts-meta";
 import Shuffle from "@/components/Shuffle";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { AccentPicker } from "@/components/accent-picker";
 
 const ASCII_CHARS = "█▓▒░▄▀■□▪▫★☆●○◆◇░▒▓";
 
