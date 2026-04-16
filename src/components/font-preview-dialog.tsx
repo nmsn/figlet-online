@@ -45,8 +45,11 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
           </Dialog.DialogDescription>
         </Dialog.DialogHeader>
 
-        <div className="relative cursor-pointer" onDoubleClick={handleCopy}>
-          <pre className="ascii-text text-accent text-sm leading-tight overflow-auto whitespace-pre font-mono">
+        <div
+          className="relative flex justify-center cursor-pointer min-h-32"
+          onDoubleClick={handleCopy}
+        >
+          <pre className="ascii-text text-accent text-sm leading-tight overflow-auto whitespace-pre font-mono text-center">
             {ascii || "Loading..."}
           </pre>
           {copied && (
