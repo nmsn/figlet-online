@@ -35,7 +35,7 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
 
   return (
     <Dialog.Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <Dialog.DialogContent className="max-w-4xl w-[90vw] max-h-[90vh] overflow-auto bg-background border-card-border">
+      <Dialog.DialogContent className="max-w-4xl w-[90vw] min-w-125 max-h-[90vh] overflow-auto bg-background border-card-border">
         <Dialog.DialogHeader>
           <Dialog.DialogTitle className="text-xl font-bold text-accent">
             {font?.name}
