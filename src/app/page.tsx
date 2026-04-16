@@ -36,6 +36,7 @@ export default function HomePage() {
               duration={0.4}
               stagger={0.02}
               triggerOnHover={true}
+              triggerOnce={false}
               respectReducedMotion={true}
             />
             <div className="flex items-center gap-2">
