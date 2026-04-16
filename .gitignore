@@ -14,3 +14,16 @@ yarn-error.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Design context
+.impeccable.md
+
+# Playwright
+.playwright-mcp/
+
+# npm pack artifacts
+*.tgz
+package/
+
+# Test font file
+public/fonts/miniwi-test.flf
