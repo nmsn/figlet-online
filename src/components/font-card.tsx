@@ -16,7 +16,7 @@ interface FontCardProps {
   onOpenPreview?: (font: FontMeta, text: string) => void;
 }
 
-type RenderState = "idle" | "loading" | "rendered" | "error";
+type RenderState = "idle" | "loading" | "rendered" | "error" | "unsupported";
 
 export const FontCard = memo(function FontCardInner({ font, text, onVisible, onOpenPreview }: FontCardProps) {
   const [state, setState] = useState<RenderState>("idle");
@@ -33,11 +33,24 @@ export const FontCard = memo(function FontCardInner({ font, text, onVisible, onO
         setState("error");
         return;
       }
+      // 检查空输出 - 表示字体不支持该字符
+      if (!data || data.trim() === "") {
+        setState("unsupported");
+        return;
+      }
       setAscii(data ?? "");
       setState("rendered");
       onVisible?.();
     });
   }, [font.id, text, state, onVisible]);
+
+  // 响应 text 变化 - 当 text 变化且当前已渲染时，重置为 idle
+  useEffect(() => {
+    if (state === "rendered" || state === "unsupported") {
+      setState("idle");
+      setAscii("");
+    }
+  }, [text, state]);
 
   const handleClick = useCallback(() => {
     if (state === "idle") {
@@ -105,6 +118,11 @@ export const FontCard = memo(function FontCardInner({ font, text, onVisible, onO
         )}
         {state === "error" && (
           <span className="text-red-500 text-xs">Error</span>
+        )}
+        {state === "unsupported" && (
+          <span className="text-muted text-xs text-center px-2">
+            此字体不支持该字符
+          </span>
         )}
       </div>
 

@@ -1,19 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { FontCard } from "@/components/font-card";
+import figlet from "figlet";
 
 // Mock IntersectionObserver
-const mockObserve = vi.fn();
-const mockDisconnect = vi.fn();
-const mockUnobserve = vi.fn();
+const mockIntersectionCallback = {
+  current: null as ((entries: any) => void) | null,
+};
 class MockIntersectionObserver {
-  observe = mockObserve;
-  disconnect = mockDisconnect;
-  unobserve = mockUnobserve;
-  constructor() {
-    return this;
+  constructor(callback: (entries: any) => void) {
+    mockIntersectionCallback.current = callback;
   }
+  observe = vi.fn();
+  disconnect = vi.fn();
+  unobserve = vi.fn();
 }
 globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
 
@@ -23,6 +24,20 @@ const mockFont = {
   style: "classic" as const,
   heightLevel: 2 as const,
 };
+
+// Mock figlet.text
+vi.spyOn(figlet, "text").mockImplementation((_text, _options, callback) => {
+  // Simulate empty output for Chinese characters (unsupported chars)
+  // Use setTimeout to simulate async behavior of figlet
+  setTimeout(() => {
+    if (_text === "你好") {
+      callback(null, "");
+    } else {
+      callback(null, "ASCII output");
+    }
+  }, 0);
+  return "";
+});
 
 describe("FontCard auto-load", () => {
   beforeEach(() => {
@@ -55,5 +70,37 @@ describe("FontCard auto-load", () => {
     render(<FontCard font={mockFont} text="Hello" />);
     // The idle state should not render ASCII
     expect(screen.queryByRole("pre")).not.toBeInTheDocument();
+  });
+
+  it("resets to idle when text prop changes", async () => {
+    const { rerender } = render(<FontCard font={mockFont} text="Hello" />);
+
+    // Trigger visible (IntersectionObserver callback receives array of entries)
+    await act(async () => {
+      mockIntersectionCallback.current?.([{ isIntersecting: true }] as any);
+    });
+
+    // Wait for the rendered state to be reached
+    await new Promise((r) => setTimeout(r, 50));
+
+    // Now the state should be "rendered" (figlet processed)
+    // Change text prop - should reset to idle
+    rerender(<FontCard font={mockFont} text="World" />);
+
+    // Should show "Click to load" again (state reset to idle)
+    expect(screen.getByText("Click to load")).toBeInTheDocument();
+  });
+
+  it('shows "此字体不支持该字符" when font does not support the text', async () => {
+    render(<FontCard font={mockFont} text="你好" />);
+
+    // Trigger visible (IntersectionObserver callback receives array of entries)
+    await act(async () => {
+      mockIntersectionCallback.current?.([{ isIntersecting: true }] as any);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("此字体不支持该字符")).toBeInTheDocument();
+    });
   });
 });
