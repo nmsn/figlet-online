@@ -399,13 +399,11 @@ const Shuffle: React.FC<ShuffleProps> = ({
 
   const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-2xl leading-none';
 
-  // Always use pixel font for Shuffle effect via CSS variable
-  const fontStyle = { fontFamily: `'${pixelFont.style.fontFamily}', monospace` };
-
+  // Always use pixel font for Shuffle effect
   const commonStyle = useMemo(
     () => ({
       textAlign,
-      ...fontStyle,
+      fontFamily: pixelFont.style.fontFamily,
       ...style
     }),
     [textAlign, style]
