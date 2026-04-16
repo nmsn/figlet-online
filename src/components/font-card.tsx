@@ -12,11 +12,12 @@ interface FontCardProps {
   font: FontMeta;
   text: string;
   onVisible?: () => void;
+  onOpenPreview?: (font: FontMeta, text: string) => void;
 }
 
 type RenderState = "idle" | "loading" | "rendered" | "error";
 
-export function FontCard({ font, text, onVisible }: FontCardProps) {
+export function FontCard({ font, text, onVisible, onOpenPreview }: FontCardProps) {
   const [state, setState] = useState<RenderState>("idle");
   const [ascii, setAscii] = useState<string>("");
   const [isCopied, setIsCopied] = useState(false);
@@ -37,8 +38,12 @@ export function FontCard({ font, text, onVisible }: FontCardProps) {
   }, [font.id, text, state, onVisible]);
 
   const handleClick = useCallback(() => {
-    if (state === "idle") loadAndRender();
-  }, [loadAndRender, state]);
+    if (state === "idle") {
+      loadAndRender();
+    } else if (state === "rendered" && onOpenPreview) {
+      onOpenPreview(font, text);
+    }
+  }, [loadAndRender, state, onOpenPreview, font, text]);
 
   const handleDoubleClick = useCallback(async () => {
     if (state !== "rendered" || !ascii) return;

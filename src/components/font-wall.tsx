@@ -4,6 +4,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { FontCard } from "@/components/font-card";
+import { FontPreviewDialog } from "@/components/font-preview-dialog";
 import type { FontMeta } from "@/lib/figlet/fonts-meta";
 
 interface FontWallProps {
@@ -15,6 +16,13 @@ const COLS = 2;
 
 export function FontWall({ fonts, text }: FontWallProps) {
   const [mounted, setMounted] = useState(false);
+  const [previewFont, setPreviewFont] = useState<FontMeta | null>(null);
+  const [previewText, setPreviewText] = useState("");
+
+  const handleOpenPreview = (font: FontMeta, txt: string) => {
+    setPreviewFont(font);
+    setPreviewText(txt);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -51,10 +59,17 @@ export function FontWall({ fonts, text }: FontWallProps) {
               key={font.id}
               font={font}
               text={text}
+              onOpenPreview={handleOpenPreview}
             />
           ))}
         </div>
       ))}
+      <FontPreviewDialog
+        open={!!previewFont}
+        font={previewFont}
+        text={previewText}
+        onClose={() => setPreviewFont(null)}
+      />
     </div>
   );
 }
