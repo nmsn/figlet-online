@@ -21,7 +21,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-4">
             <Shuffle
-              text="🔤 Figlet Fonts"
+              text="Figlet Fonts"
               tag="h1"
               className="text-xl font-bold"
               colorFrom="#00ff00"

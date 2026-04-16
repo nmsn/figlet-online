@@ -11,7 +11,7 @@ interface FontWallProps {
   text: string;
 }
 
-const COLS = 3;
+const COLS = 2;
 
 export function FontWall({ fonts, text }: FontWallProps) {
   const [mounted, setMounted] = useState(false);
@@ -22,7 +22,7 @@ export function FontWall({ fonts, text }: FontWallProps) {
 
   if (!mounted) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-5">
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
@@ -44,7 +44,7 @@ export function FontWall({ fonts, text }: FontWallProps) {
       {rows.map((rowFonts, rowIdx) => (
         <div
           key={rowIdx}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 px-0 mb-5"
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-5 px-0 mb-5"
         >
           {rowFonts.map(font => (
             <FontCard
