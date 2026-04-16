@@ -17,6 +17,11 @@ export function TextInput({ value, onChange }: TextInputProps) {
   // Sync localValue when prop changes externally
   useEffect(() => {
     setLocalValue(value);
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, [value]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

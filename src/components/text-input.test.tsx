@@ -51,4 +51,22 @@ describe("TextInput debounce", () => {
     render(<TextInput value="Test" onChange={onChange} />);
     expect(screen.getByRole("textbox")).toHaveValue("Test");
   });
+
+  it("clears pending debounce timeout on unmount", () => {
+    const onChange = vi.fn();
+    const { unmount } = render(<TextInput value="" onChange={onChange} />);
+
+    const input = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: "Hello" } });
+
+    // onChange should NOT be called yet
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Unmount before debounce fires
+    unmount();
+
+    // Advance time - onChange should NOT be called since component unmounted
+    vi.advanceTimersByTime(300);
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });
