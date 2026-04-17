@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 const ACCENT_COLORS = [
   "#00ff00", // Neon Green
@@ -15,7 +15,15 @@ const STORAGE_KEY = "figlet-accent-color";
 
 export type AccentColor = typeof ACCENT_COLORS[number];
 
-export function useAccentColor() {
+interface AccentColorContextValue {
+  accent: AccentColor;
+  setAccent: (color: AccentColor) => void;
+  colors: readonly AccentColor[];
+}
+
+const AccentColorContext = createContext<AccentColorContextValue | null>(null);
+
+function useAccentColorState() {
   const [accent, setAccentState] = useState<AccentColor>("#00ff00");
 
   useEffect(() => {
@@ -33,4 +41,21 @@ export function useAccentColor() {
   };
 
   return { accent, setAccent, colors: ACCENT_COLORS };
+}
+
+export function AccentColorProvider({ children }: { children: ReactNode }) {
+  const value = useAccentColorState();
+  return (
+    <AccentColorContext.Provider value={value}>
+      {children}
+    </AccentColorContext.Provider>
+  );
+}
+
+export function useAccentColor() {
+  const context = useContext(AccentColorContext);
+  if (!context) {
+    throw new Error("useAccentColor must be used within AccentColorProvider");
+  }
+  return context;
 }

@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AccentColorProvider } from "@/hooks/use-accent-color";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
     <html lang="zh" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased min-h-screen flex flex-col">
         <ThemeProvider>
+          <AccentColorProvider>
           {children}
+        </AccentColorProvider>
           <Toaster />
         </ThemeProvider>
       </body>

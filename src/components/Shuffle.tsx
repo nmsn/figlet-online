@@ -102,24 +102,6 @@ const Shuffle: React.FC<ShuffleProps> = ({
     return `top ${startPct}%${sign}`;
   }, [threshold, rootMargin]);
 
-  // Force rebuild when colorFrom changes (e.g., accent color change)
-  useEffect(() => {
-    if (!colorFrom || !ref.current || !fontsLoaded) return;
-
-    // Small delay to ensure DOM is ready after remount
-    const timeout = setTimeout(() => {
-      if (tlRef.current) {
-        tlRef.current.kill();
-        tlRef.current = null;
-      }
-      // Trigger a custom event to rebuild
-      const event = new CustomEvent('shuffle-rebuild');
-      ref.current?.dispatchEvent(event);
-    }, 10);
-
-    return () => clearTimeout(timeout);
-  }, [colorFrom, fontsLoaded]);
-
   useGSAP(
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
