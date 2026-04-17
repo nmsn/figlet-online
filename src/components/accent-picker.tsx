@@ -1,6 +1,6 @@
 "use client";
 
-import { Palette } from "lucide-react";
+import { LucideGithub, Palette } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useAccentColor } from "@/hooks/use-accent-color";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ export function AccentPicker() {
   const { accent, setAccent, colors } = useAccentColor();
 
   return (
+    <>
     <Popover>
       <PopoverTrigger asChild>
         <button
@@ -18,7 +19,7 @@ export function AccentPicker() {
           <Palette size={18} style={{ color: accent }} />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-3" align="end">
+      <PopoverContent className="w-auto p-3 mr-2" align="end">
         <div className="grid grid-cols-3 gap-2">
           {colors.map((color) => (
             <button
@@ -35,5 +36,15 @@ export function AccentPicker() {
         </div>
       </PopoverContent>
     </Popover>
+    <a
+      href="https://github.com/nmsn/figlet-online"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-card-hover transition-colors"
+      aria-label="View on GitHub"
+    >
+      <LucideGithub size={18} />
+    </a>
+    </>
   );
 }
