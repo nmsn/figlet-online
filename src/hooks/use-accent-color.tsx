@@ -31,6 +31,8 @@ function useAccentColorState() {
     if (stored && ACCENT_COLORS.includes(stored as AccentColor)) {
       setAccentState(stored as AccentColor);
       document.documentElement.style.setProperty("--accent", stored);
+    } else {
+      document.documentElement.style.setProperty("--accent", "#00ff00");
     }
   }, []);
 

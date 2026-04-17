@@ -24,20 +24,37 @@ export default function HomePage() {
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-card-border py-4">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Shuffle
-              text="Figlet Fonts"
-              tag="h1"
-              className="text-xl font-bold"
-              colorFrom={accent}
-              colorTo={accent}
-              shuffleDirection="right"
-              scrambleCharset={ASCII_CHARS}
-              duration={0.4}
-              stagger={0.02}
-              triggerOnHover={true}
-              triggerOnce={false}
-              respectReducedMotion={true}
-            />
+            <div className="flex flex-col items-center">
+              <Shuffle
+                text="Figlet"
+                tag="h1"
+                className="text-xl font-bold"
+                colorFrom={accent}
+                colorTo={accent}
+                shuffleDirection="right"
+                scrambleCharset={ASCII_CHARS}
+                duration={0.4}
+                stagger={0.02}
+                triggerOnHover={true}
+                triggerOnce={false}
+                respectReducedMotion={true}
+              />
+              <Shuffle
+                text="Fonts"
+                tag="h1"
+                className="text-xl font-bold"
+                colorFrom={accent}
+                colorTo={accent}
+                shuffleDirection="right"
+                scrambleCharset={ASCII_CHARS}
+                duration={0.4}
+                stagger={0.02}
+                triggerOnHover={true}
+                triggerOnce={false}
+                respectReducedMotion={true}
+              />
+            </div>
+
             <TextInput value={text} onChange={handleTextChange} />
             <div className="flex items-center gap-2">
               <ThemeToggle />
