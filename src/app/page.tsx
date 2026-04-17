@@ -23,7 +23,7 @@ export default function HomePage() {
     <main className="min-h-screen">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-card-border py-4">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between">
             <Shuffle
               text="Figlet Fonts"
               tag="h1"
@@ -38,12 +38,12 @@ export default function HomePage() {
               triggerOnce={false}
               respectReducedMotion={true}
             />
+            <TextInput value={text} onChange={handleTextChange} />
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <AccentPicker />
             </div>
           </div>
-          <TextInput value={text} onChange={handleTextChange} />
         </div>
       </header>
 
