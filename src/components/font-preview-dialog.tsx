@@ -35,15 +35,15 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
 
   return (
     <Dialog.Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <Dialog.DialogContent className="max-w-4xl w-[90vw] min-w-125 max-h-[90vh] flex flex-col bg-background border-card-border">
+      <Dialog.DialogContent className="w-auto max-w-[95vw] min-w-125 max-h-[90vh] flex flex-col bg-background border-card-border">
         <div className="flex-shrink-0">
           <Dialog.DialogHeader>
           <Dialog.DialogTitle className="text-xl font-bold text-accent">
             {font?.name}
           </Dialog.DialogTitle>
-          <Dialog.DialogDescription className="text-muted">
+          {/* <Dialog.DialogDescription className="text-muted">
             Double-click to copy • Press ESC to close
-          </Dialog.DialogDescription>
+          </Dialog.DialogDescription> */}
         </Dialog.DialogHeader>
         </div>
 
