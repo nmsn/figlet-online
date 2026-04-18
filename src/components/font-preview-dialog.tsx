@@ -35,8 +35,9 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
 
   return (
     <Dialog.Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <Dialog.DialogContent className="max-w-4xl w-[90vw] min-w-125 max-h-[90vh] overflow-auto bg-background border-card-border">
-        <Dialog.DialogHeader>
+      <Dialog.DialogContent className="max-w-4xl w-[90vw] min-w-125 max-h-[90vh] flex flex-col bg-background border-card-border">
+        <div className="flex-shrink-0">
+          <Dialog.DialogHeader>
           <Dialog.DialogTitle className="text-xl font-bold text-accent">
             {font?.name}
           </Dialog.DialogTitle>
@@ -44,12 +45,13 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
             Double-click to copy • Press ESC to close
           </Dialog.DialogDescription>
         </Dialog.DialogHeader>
+        </div>
 
         <div
-          className="relative flex justify-center cursor-pointer min-h-32"
+          className="relative flex-1 flex justify-center cursor-pointer min-h-32 overflow-auto"
           onDoubleClick={handleCopy}
         >
-          <pre className="ascii-text text-accent text-sm leading-tight overflow-auto whitespace-pre font-mono text-center">
+          <pre className="ascii-text text-accent text-sm leading-tight whitespace-pre font-mono text-center">
             {ascii || "Loading..."}
           </pre>
           {copied && (
@@ -59,7 +61,7 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
           )}
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex-shrink-0 flex justify-end">
           <button
             onClick={handleCopy}
             className="flex items-center gap-2 px-4 py-2 bg-accent text-background rounded-lg hover:opacity-90 transition-opacity"
