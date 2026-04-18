@@ -145,14 +145,17 @@ describe("FontPreviewDialog", () => {
     });
 
     const dialog = screen.getByRole("dialog");
-    // ASCII preview container should be scrollable
-    const previewContainer = dialog.querySelector('[class*="flex-1"]');
+    // The preview container is the div wrapping the <pre> element (its parent)
+    const previewContainer = dialog.querySelector('pre.ascii-text')?.parentElement;
     expect(previewContainer).toBeInTheDocument();
-    // The preview container itself should have overflow that allows scrolling
-    // We verify by checking computed styles or scrollHeight vs clientHeight
-    if (previewContainer) {
-      expect(previewContainer.scrollHeight).toBeGreaterThan(previewContainer.clientHeight);
-    }
+
+    // The preview container itself should be scrollable (overflow auto)
+    // Check that it has overflow style that allows scrolling
+    const styles = window.getComputedStyle(previewContainer!);
+    expect(styles.overflow).toMatch(/(auto|scroll)/);
+
+    // Verify scrollHeight > clientHeight to confirm it's actually scrollable
+    expect(previewContainer!.scrollHeight).toBeGreaterThan(previewContainer!.clientHeight);
   });
 
   it("keeps header and footer fixed when preview area scrolls", async () => {
@@ -172,11 +175,18 @@ describe("FontPreviewDialog", () => {
 
     const dialog = screen.getByRole("dialog");
     const header = dialog.querySelector('[data-slot="dialog-header"]');
-    const footer = dialog.querySelector('[data-slot="dialog-footer"]');
+    // Footer is the button container div (not using Dialog.DialogFooter)
+    const footer = dialog.querySelector('.flex.justify-end');
 
     // Header and footer should exist
     expect(header).toBeInTheDocument();
     expect(footer).toBeInTheDocument();
+
+    // Header and footer should NOT have overflow: auto styles
+    const headerStyles = window.getComputedStyle(header!);
+    const footerStyles = window.getComputedStyle(footer!);
+    expect(headerStyles.overflow).not.toBe("auto");
+    expect(footerStyles.overflow).not.toBe("auto");
 
     // Verify header is at the top of dialog
     const dialogRect = dialog.getBoundingClientRect();
@@ -205,11 +215,36 @@ describe("FontPreviewDialog", () => {
     });
 
     const dialog = screen.getByRole("dialog");
-    const previewContainer = dialog.querySelector('[class*="flex-1"]');
+    // The preview container is the div wrapping the <pre> element (its parent)
+    const previewContainer = dialog.querySelector('pre.ascii-text')?.parentElement;
 
-    // Dialog should be scrollable
-    expect(dialog.scrollHeight).toBeGreaterThan(dialog.clientHeight);
-    // Preview area should also be scrollable independently
+    // Dialog itself should NOT need to scroll (only the preview area scrolls)
+    expect(dialog.scrollHeight).toBeLessThanOrEqual(dialog.clientHeight);
+    // Preview area should be scrollable independently
     expect(previewContainer!.scrollHeight).toBeGreaterThan(previewContainer!.clientHeight);
+  });
+
+  it("normal text doesn't cause scroll", async () => {
+    const shortText = "Hello";
+    render(
+      <FontPreviewDialog
+        open={true}
+        font={mockFont}
+        text={shortText}
+        onClose={vi.fn()}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    const dialog = screen.getByRole("dialog");
+    // The preview container
+    const previewContainer = dialog.querySelector('pre.ascii-text')?.parentElement;
+
+    // Neither dialog nor preview container should need scrolling for short text
+    expect(dialog.scrollHeight).toBeLessThanOrEqual(dialog.clientHeight);
+    expect(previewContainer!.scrollHeight).toBeLessThanOrEqual(previewContainer!.clientHeight);
   });
 });
