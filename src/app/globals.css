@@ -167,3 +167,8 @@ body {
     @apply font-sans;
   }
 }
+
+/* Override Radix UI Dialog default max-width */
+[data-slot="dialog-content"] {
+  max-width: none !important;
+}
