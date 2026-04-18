@@ -168,7 +168,9 @@ body {
   }
 }
 
-/* Override Radix UI Dialog default max-width */
+/* Override Radix UI Dialog default max-width and enable auto-sizing */
 [data-slot="dialog-content"] {
-  max-width: none !important;
+  width: fit-content !important;
+  max-width: 95vw !important;
+  min-width: 0 !important;
 }

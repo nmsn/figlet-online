@@ -35,7 +35,7 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
 
   return (
     <Dialog.Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <Dialog.DialogContent className="w-max max-w-[95vw] min-w-125 max-h-[90vh] flex flex-col bg-background border-card-border">
+      <Dialog.DialogContent className="max-w-[95vh] max-h-[90vh] flex flex-col bg-background border-card-border">
         <div className="flex-shrink-0">
           <Dialog.DialogHeader>
           <Dialog.DialogTitle className="text-xl font-bold text-accent">
@@ -48,7 +48,7 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
         </div>
 
         <div
-          className="relative flex justify-center cursor-pointer w-max"
+          className="relative flex justify-center cursor-pointer overflow-auto"
           onDoubleClick={handleCopy}
         >
           <pre className="ascii-text text-accent text-sm leading-tight whitespace-pre font-mono text-center">
