@@ -127,4 +127,89 @@ describe("FontPreviewDialog", () => {
 
     expect(onClose).toHaveBeenCalled();
   });
+
+  it("scrolls only in ASCII preview area when text is long", async () => {
+    // Long text that forces scroll
+    const longText = "A".repeat(200);
+    render(
+      <FontPreviewDialog
+        open={true}
+        font={mockFont}
+        text={longText}
+        onClose={vi.fn()}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    const dialog = screen.getByRole("dialog");
+    // ASCII preview container should be scrollable
+    const previewContainer = dialog.querySelector('[class*="flex-1"]');
+    expect(previewContainer).toBeInTheDocument();
+    // The preview container itself should have overflow that allows scrolling
+    // We verify by checking computed styles or scrollHeight vs clientHeight
+    if (previewContainer) {
+      expect(previewContainer.scrollHeight).toBeGreaterThan(previewContainer.clientHeight);
+    }
+  });
+
+  it("keeps header and footer fixed when preview area scrolls", async () => {
+    const longText = "A".repeat(200);
+    render(
+      <FontPreviewDialog
+        open={true}
+        font={mockFont}
+        text={longText}
+        onClose={vi.fn()}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    const dialog = screen.getByRole("dialog");
+    const header = dialog.querySelector('[data-slot="dialog-header"]');
+    const footer = dialog.querySelector('[data-slot="dialog-footer"]');
+
+    // Header and footer should exist
+    expect(header).toBeInTheDocument();
+    expect(footer).toBeInTheDocument();
+
+    // Verify header is at the top of dialog
+    const dialogRect = dialog.getBoundingClientRect();
+    const headerRect = header!.getBoundingClientRect();
+    const footerRect = footer!.getBoundingClientRect();
+
+    // Header should be at the very top of dialog
+    expect(Math.abs(headerRect.top - dialogRect.top)).toBeLessThan(5);
+    // Footer should be at the very bottom of dialog
+    expect(Math.abs(footerRect.bottom - dialogRect.bottom)).toBeLessThan(5);
+  });
+
+  it("dialog content is vertically scrollable but header/footer stay fixed", async () => {
+    const longText = "A".repeat(300);
+    render(
+      <FontPreviewDialog
+        open={true}
+        font={mockFont}
+        text={longText}
+        onClose={vi.fn()}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    const dialog = screen.getByRole("dialog");
+    const previewContainer = dialog.querySelector('[class*="flex-1"]');
+
+    // Dialog should be scrollable
+    expect(dialog.scrollHeight).toBeGreaterThan(dialog.clientHeight);
+    // Preview area should also be scrollable independently
+    expect(previewContainer!.scrollHeight).toBeGreaterThan(previewContainer!.clientHeight);
+  });
 });
