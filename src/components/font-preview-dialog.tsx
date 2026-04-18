@@ -48,7 +48,7 @@ export function FontPreviewDialog({ open, font, text, onClose }: FontPreviewDial
         </div>
 
         <div
-          className="relative flex-1 flex justify-center cursor-pointer overflow-auto"
+          className="relative flex-1 flex justify-center cursor-pointer"
           onDoubleClick={handleCopy}
         >
           <pre className="ascii-text text-accent text-sm leading-tight whitespace-pre font-mono text-center">
